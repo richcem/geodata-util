@@ -1,7 +1,7 @@
-geodate-util
+geodata-util
 ========================
 
-Update Geo date util.
+Update Geo data util.
 
 
 ## Install
