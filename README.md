@@ -1,7 +1,7 @@
 geodata-util
 ========================
 
-Update Geo data util.
+Update GeoIP/GeoSite util.
 
 
 ## Install
