@@ -5,10 +5,10 @@ use std::env;
 use std::fs;
 use std::path::Path;
 
-const DOWNLOAD_LINK_GEOIP: &str =
-    "https://github.com/v2fly/geoip/releases/latest/download/geoip.dat";
-const DOWNLOAD_LINK_GEOSITE: &str =
-    "https://github.com/v2fly/domain-list-community/releases/latest/download/dlc.dat";
+const GEOIP_DATA_URL: &str =
+    "https://cdn.jsdelivr.net/gh/Loyalsoldier/v2ray-rules-dat@release/geoip.dat";
+const GEOSITE_DATA_URL: &str =
+    "https://cdn.jsdelivr.net/gh/Loyalsoldier/v2ray-rules-dat@release/geosite.dat";
 
 fn main() -> Result<()> {
     SimpleLogger::new()
@@ -20,16 +20,12 @@ fn main() -> Result<()> {
     let file_geosite = env::current_dir()?.join("geosite.dat");
 
     // 更新geoip.dat
-    match update_geo_data(DOWNLOAD_LINK_GEOIP, file_geoip) {
-        Ok(()) => println!("update geoip.dat success"),
-        Err(e) => panic!(e),
-    }
+    update_geo_data(GEOIP_DATA_URL, file_geoip).expect("download geoip.dat failed");
+    info!("update geoip.dat success");
 
     // 更新geosite.dat
-    match update_geo_data(DOWNLOAD_LINK_GEOSITE, file_geosite) {
-        Ok(()) => println!("update geoip.dat success"),
-        Err(e) => panic!(e),
-    }
+    update_geo_data(GEOSITE_DATA_URL, file_geosite).expect("download geosite.dat failed");
+    info!("update geoip.dat success");
 
     Ok(())
 }
@@ -42,11 +38,16 @@ fn update_geo_data<P: AsRef<Path>>(url: &str, path: P) -> Result<()> {
     // 下载文件
     info!("downloading from {}", url);
 
-    let bytes = reqwest::blocking::get(url)?.bytes()?;
+    let resp = reqwest::blocking::get(url)?;
+
+    if !resp.status().is_success() {
+        let err = format!("response code: {}", resp.status());
+        panic!(err);
+    }
 
     // 写入文件
     info!("save to {}", save);
-    fs::write(path, bytes)?;
+    fs::write(path, &resp.bytes()?)?;
 
     // 完成
     Ok(())
@@ -60,7 +61,7 @@ mod test {
     fn test_update_geoip_file() {
         let f = std::env::current_dir().unwrap().join("geoip.dat");
 
-        let ret = update_geo_data(DOWNLOAD_LINK_GEOIP, f);
+        let ret = update_geo_data(GEOIP_DATA_URL, f);
 
         assert!(ret.is_ok());
     }
@@ -69,7 +70,7 @@ mod test {
     fn test_update_geosite_file() {
         let f = std::env::current_dir().unwrap().join("geosite.dat");
 
-        let ret = update_geo_data(DOWNLOAD_LINK_GEOSITE, f);
+        let ret = update_geo_data(GEOSITE_DATA_URL, f);
 
         assert!(ret.is_ok());
     }

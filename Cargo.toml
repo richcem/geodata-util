@@ -1,13 +1,18 @@
 [package]
 name = "geodata-util"
-version = "0.1.0"
+version = "0.1.1"
 authors = ["陈旭健 <chenxujian@gmail.com>"]
 edition = "2018"
+publish = false
+keywords = ["geo", "geosite", "geoip"]
+
+[profile.release]
+opt-level = 'z'
 
 # See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
 
 [dependencies]
-reqwest = { version = "0.10.9", features = ["blocking"] }
-anyhow = "1.0.35"
-log = "0.4.11"
+reqwest = { version = "0.11.2", features = ["blocking"] }
+anyhow = "1.0.39"
+log = "0.4.14"
 simple_logger = "1.11.0"
