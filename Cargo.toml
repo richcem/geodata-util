@@ -1,6 +1,6 @@
 [package]
 name = "geodata-util"
-version = "0.1.1"
+version = "0.1.2"
 authors = ["陈旭健 <chenxujian@gmail.com>"]
 edition = "2018"
 publish = false
