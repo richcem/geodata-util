@@ -5,9 +5,9 @@ use crate::error::{AppError, AppResult};
 use std::{env, fs};
 
 const GEOIP_DATA_URL: &str =
-    "https://cdn.jsdelivr.net/gh/Loyalsoldier/v2ray-rules-dat@release/geoip.dat";
+    "https://github.com/Loyalsoldier/v2ray-rules-dat/releases/latest/download/geoip.dat";
 const GEOSITE_DATA_URL: &str =
-    "https://cdn.jsdelivr.net/gh/Loyalsoldier/v2ray-rules-dat@release/geosite.dat";
+    "https://github.com/Loyalsoldier/v2ray-rules-dat/releases/latest/download/geosite.dat";
 
 fn main() -> AppResult<()> {
 
